@@ -220,111 +220,56 @@ export default async function DashboardPage() {
         </div>
 
         {/* Scan History */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Scan History
-              </h2>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-                Run New Scan
-              </button>
-            </div>
+        <div className="bg-white rounded-xl shadow-sm">
+          <div className="px-6 py-4 border-b">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Scan History
+            </h2>
           </div>
-
           <div className="p-6">
             {history.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {history
                   .slice()
                   .reverse()
-                  .map((item: any, index: number) => {
-                    const breakdown = getVulnerabilityBreakdown(
-                      item.totalVulnerabilities
-                    );
-                    const scanDate = new Date(item.timestamp);
-
-                    return (
-                      <div
-                        key={history.length - 1 - index}
-                        className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center space-x-4">
-                            {getStatusIndicator(item.totalVulnerabilities)}
-                            <div>
-                              <p className="font-semibold text-gray-900">
-                                Scan #{history.length - index}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {scanDate.toLocaleDateString()} at{" "}
-                                {scanDate.toLocaleTimeString()}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-2xl font-bold text-gray-900">
-                              {item.totalVulnerabilities}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              Issues found
-                            </p>
-                          </div>
+                  .map((scan: any, index: number) => (
+                    <div key={index} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-semibold text-gray-800">
+                            Scan #{history.length - index}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {new Date(scan.timestamp).toLocaleString()}
+                          </p>
                         </div>
-
-                        {item.totalVulnerabilities > 0 && (
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            {Object.entries(breakdown).map(
-                              ([severity, count]) =>
-                                count > 0 && (
-                                  <div
-                                    key={severity}
-                                    className={`px-3 py-2 rounded-lg border text-center ${getSeverityColor(
-                                      severity
-                                    )}`}
-                                  >
-                                    <p className="font-semibold text-lg">
-                                      {count as number}
-                                    </p>
-                                    <p className="text-xs uppercase tracking-wide">
-                                      {severity}
-                                    </p>
-                                  </div>
-                                )
-                            )}
-                          </div>
-                        )}
+                        <div>
+                          <p className="text-right font-bold text-lg">
+                            {scan.totalVulnerabilities}
+                          </p>
+                          <p className="text-sm text-gray-500">Issues</p>
+                        </div>
                       </div>
-                    );
-                  })}
+
+                      {/* Displays the list of packages */}
+                      {scan.packages && (
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Packages Scanned
+                          </h4>
+                          <ul className="list-disc pl-5 mt-1 text-sm text-gray-700">
+                            {scan.packages.map((pkg: string, i: number) => (
+                              <li key={i}>{pkg}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ))}
               </div>
             ) : (
               <div className="text-center py-12">
-                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-12 h-12 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  No scan history found
-                </h3>
-                <p className="text-gray-500 mb-6 max-w-md mx-auto">
-                  Get started by running your first security scan. Update your
-                  package.json or click the button above to trigger a new scan.
-                </p>
-                <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                  Run Your First Scan
-                </button>
+                <p className="text-gray-500">No scan history found.</p>
               </div>
             )}
           </div>
