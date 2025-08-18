@@ -2,8 +2,6 @@
 
 This is a standalone application designed to monitor an `npm` project's dependencies for vulnerabilities. It periodically checks a `package.json` file for any new or updated packages, scans them using the Open Source Vulnerabilities (OSV) database, and sends a detailed report to a specified user via a Slack Direct Message.
 
-This project was developed as part of an SDE hiring assignment.
-
 ## Architecture
 
 The application is built with Node.js and TypeScript, and it follows a modular design for maintainability and extensibility.
@@ -101,13 +99,3 @@ Timestamp: 8/18/2025, 2:32 PM
 Package: react@18.3.1
 Result: No vulnerabilities were found.
 ```
-
-## Use of AI Tools
-
-An AI assistant was used during the development of this project to improve efficiency and explore solutions. Its contributions included:
-
-- **Initial Scaffolding:** Assisting with the initial project setup and suggesting a modular architecture.
-- **Code Generation:** Writing boilerplate code for the OSV and Slack API client modules.
-- **Iterative Debugging:** Providing extensive, step-by-step assistance in diagnosing and fixing a wide range of issues, including API errors, environment variable loading problems, and logical errors in the file polling and version comparison mechanism.
-- **Code Refactoring:** Suggesting improvements to the code for clarity, robustness, and style, such as modifying the Slack message format.
-- **Documentation:** Generating this `README.md` file based on the project's features and the assignment's requirements.
