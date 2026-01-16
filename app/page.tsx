@@ -1,280 +1,675 @@
-import fs from "fs/promises";
-import path from "path";
+"use client";
 
-async function getScanHistory() {
-  try {
-    const historyPath = path.resolve("./scan-history.json");
-    const data = await fs.readFile(historyPath, "utf-8");
-    return JSON.parse(data);
-  } catch (error) {
-    return [];
-  }
-}
+import { Navbar } from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Shield,
+  Zap,
+  Bell,
+  Github,
+  Terminal,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-// Mock function to simulate vulnerability severity breakdown
-function getVulnerabilityBreakdown(total: number) {
-  if (total === 0) return { critical: 0, high: 0, medium: 0, low: 0 };
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
-  // Simulate distribution
-  const critical = Math.floor(total * 0.1);
-  const high = Math.floor(total * 0.2);
-  const medium = Math.floor(total * 0.4);
-  const low = total - critical - high - medium;
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
 
-  return { critical, high, medium, low };
-}
-
-function getSeverityColor(severity: string) {
-  switch (severity) {
-    case "critical":
-      return "text-red-600 bg-red-50 border-red-200";
-    case "high":
-      return "text-orange-600 bg-orange-50 border-orange-200";
-    case "medium":
-      return "text-yellow-600 bg-yellow-50 border-yellow-200";
-    case "low":
-      return "text-blue-600 bg-blue-50 border-blue-200";
-    default:
-      return "text-gray-600 bg-gray-50 border-gray-200";
-  }
-}
-
-function getStatusIndicator(vulnerabilities: number) {
-  if (vulnerabilities === 0) {
-    return (
-      <div className="flex items-center space-x-2">
-        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-        <span className="text-green-600 font-semibold">Secure</span>
-      </div>
-    );
-  } else if (vulnerabilities < 5) {
-    return (
-      <div className="flex items-center space-x-2">
-        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-        <span className="text-yellow-600 font-semibold">Low Risk</span>
-      </div>
-    );
-  } else if (vulnerabilities < 15) {
-    return (
-      <div className="flex items-center space-x-2">
-        <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-        <span className="text-orange-600 font-semibold">Medium Risk</span>
-      </div>
-    );
-  } else {
-    return (
-      <div className="flex items-center space-x-2">
-        <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-        <span className="text-red-600 font-semibold">High Risk</span>
-      </div>
-    );
-  }
-}
-
-export default async function DashboardPage() {
-  const history = await getScanHistory();
-
-  // Calculate summary statistics
-  const totalScans = history.length;
-  const latestScan = history[history.length - 1];
-  const averageVulnerabilities =
-    history.length > 0
-      ? Math.round(
-          history.reduce(
-            (sum: number, scan: any) => sum + scan.totalVulnerabilities,
-            0
-          ) / history.length
-        )
-      : 0;
-
+export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="container mx-auto p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Security Dashboard
-          </h1>
-          <p className="text-gray-600">
-            Monitor your application's vulnerability status and scan history
-          </p>
-        </div>
+    <>
+      <Navbar />
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {/* Total Scans */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Scans</p>
-                <p className="text-3xl font-bold text-gray-900">{totalScans}</p>
-              </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+      <main className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+        {/* Hero Section */}
+        <section className="container relative mx-auto px-4 pt-24 pb-12 md:pt-32 md:pb-16">
+          <div className="mx-auto max-w-5xl text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8 inline-flex items-center gap-2 rounded-full border bg-muted px-4 py-2"
+            >
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium">
+                Automated Security Monitoring
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            >
+              Secure Your
+              <span className="bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+                {" "}
+                Dependencies
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
+            >
+              Real-time vulnerability scanning for npm packages. Get instant
+              Slack alerts powered by Google's OSV database.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+            >
+              <Link href="/login">
+                <Button
+                  size="lg"
+                  className="group h-11 px-7 text-sm font-medium shadow-lg shadow-primary/20"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+                  Access Dashboard
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link href="#install">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-11 px-7 text-sm font-medium shadow-sm"
+                >
+                  <Terminal className="mr-2 h-4 w-4" />
+                  Quick Start
+                </Button>
+              </Link>
+            </motion.div>
 
-          {/* Latest Status */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Current Status
-                </p>
-                <div className="mt-2">
-                  {latestScan ? (
-                    getStatusIndicator(latestScan.totalVulnerabilities)
-                  ) : (
-                    <span className="text-gray-400">No scans yet</span>
-                  )}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-12 flex items-center justify-center gap-8 text-sm text-muted-foreground"
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <span>Open Source</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <span>Free to Use</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <span>OSV Powered</span>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12 text-center"
+            >
+              <Badge className="mb-4" variant="outline">
+                How It Works
+              </Badge>
+              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+                Two Ways to Get Started
+              </h2>
+              <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
+                Choose the workflow that fits your needs
+              </p>
+            </motion.div>
+
+            <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-2">
+              {/* CLI Path */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <Card className="h-full border border-border/40 bg-gradient-to-br from-primary/5 to-background shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader>
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md">
+                      <Terminal className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="text-xl font-semibold">
+                      CLI Package (Local Scanning)
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Install and scan your local projects instantly
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          1
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Install via npm and run scan command
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          2
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Get instant Slack notifications for vulnerabilities
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          3
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Receive unique <strong>Project ID</strong> and
+                          dashboard link
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          4
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Login to claim your project and view full history
+                        </p>
+                      </div>
+                    </div>
+                    <div className="rounded-lg border border-border/40 bg-muted/50 p-4">
+                      <p className="text-xs font-mono text-muted-foreground">
+                        $ osv-slack-scanner scan
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        ✅ Scan complete!
+                        <br />
+                        📊 Project ID:{" "}
+                        <span className="font-semibold">osv-abc123</span>
+                        <br />
+                        🔗 Dashboard link provided
+                      </p>
+                    </div>
+                    <Link href="#install">
+                      <Button className="w-full">
+                        <Terminal className="mr-2 h-4 w-4" />
+                        Install CLI Package
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Web Dashboard Path */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <Card className="h-full border border-border/40 bg-gradient-to-br from-primary/5 to-background shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader>
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md">
+                      <Github className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="text-xl font-semibold">
+                      Web Dashboard (GitHub Integration)
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Connect GitHub repos for continuous monitoring
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          1
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Sign in with your GitHub account
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          2
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Enter your <strong>Project ID</strong> to claim CLI
+                          project
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          3
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Or import GitHub repositories for auto-scanning
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          4
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          View history, trends, and trigger manual scans
+                        </p>
+                      </div>
+                    </div>
+                    <div className="rounded-lg border border-border/40 bg-muted/50 p-4">
+                      <p className="text-xs text-muted-foreground">
+                        <strong>After Login:</strong>
+                        <br />
+                        • Claim CLI projects with Project ID
+                        <br />
+                        • Import unlimited GitHub repos
+                        <br />
+                        • Track vulnerability history
+                        <br />• Trigger scans on-demand
+                      </p>
+                    </div>
+                    <Link href="/login">
+                      <Button className="w-full">
+                        <Github className="mr-2 h-4 w-4" />
+                        Sign in with GitHub
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Project ID Explanation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mx-auto mt-12 max-w-3xl"
+            >
+              <Card className="border border-primary/20 bg-primary/5 shadow-sm dark:border-primary/20 dark:bg-primary/5">
+                <CardContent className="p-6">
+                  <div className="flex gap-4">
+                    <div className="shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                        <Sparkles className="h-5 w-5" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-semibold">What is a Project ID?</h3>
+                      <p className="text-sm text-muted-foreground">
+                        When you run a CLI scan, we generate a unique{" "}
+                        <strong>Project ID</strong> (like{" "}
+                        <code className="rounded bg-primary/10 px-2 py-0.5 font-semibold text-primary">
+                          osv-abc123
+                        </code>
+                        ). This ID lets you view scan results on our web
+                        dashboard even before logging in. Once you sign in, you
+                        can <strong>claim the project</strong> to link it to
+                        your account and access full history, trends, and manage
+                        all your projects in one place.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="border-y bg-muted/50 py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12 text-center"
+            >
+              <Badge className="mb-4" variant="outline">
+                Features
+              </Badge>
+              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+                Everything You Need
+              </h2>
+              <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
+                Comprehensive security monitoring with real-time alerts and
+                detailed analytics
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+            >
+              <motion.div variants={item}>
+                <Card className="h-full border border-border/40 shadow-md transition-all hover:border-primary/50 hover:shadow-lg">
+                  <CardHeader>
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Zap className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">
+                      Real-time Scanning
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Automatically monitors package.json changes and scans
+                      dependencies instantly using OSV API
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={item}>
+                <Card className="h-full border border-border/40 shadow-md transition-all hover:border-primary/50 hover:shadow-lg">
+                  <CardHeader>
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Bell className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">
+                      Slack Integration
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Receive instant DM notifications in Slack when
+                      vulnerabilities are detected in your dependencies
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={item}>
+                <Card className="h-full border border-border/40 shadow-md transition-all hover:border-primary/50 hover:shadow-lg">
+                  <CardHeader>
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Shield className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">
+                      OSV Database
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Powered by Google's comprehensive Open Source
+                      Vulnerabilities database for accurate results
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={item}>
+                <Card className="h-full border border-border/40 shadow-md transition-all hover:border-primary/50 hover:shadow-lg">
+                  <CardHeader>
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Github className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">
+                      GitHub Sync
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Import and monitor repositories directly from GitHub with
+                      automatic permission management
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={item}>
+                <Card className="h-full border border-border/40 shadow-md transition-all hover:border-primary/50 hover:shadow-lg">
+                  <CardHeader>
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Terminal className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">
+                      CLI Support
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Full command-line interface for CI/CD integration and
+                      automated scanning workflows
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={item}>
+                <Card className="h-full border border-border/40 shadow-md transition-all hover:border-primary/50 hover:shadow-lg">
+                  <CardHeader>
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">
+                      Dashboard Analytics
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Track vulnerability trends and history with detailed
+                      dashboards and MongoDB storage
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Installation Section */}
+        <section id="install" className="py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12 text-center"
+            >
+              <Badge className="mb-4" variant="outline">
+                Installation
+              </Badge>
+              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+                Get Started in Minutes
+              </h2>
+              <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
+                Install the CLI package for automated scanning with Slack
+                notifications
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mx-auto max-w-4xl space-y-8"
+            >
+              <Card className="border border-border/40 shadow-md">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-sm">
+                      1
+                    </div>
+                    <CardTitle className="text-xl font-semibold">
+                      Install Package
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto rounded-lg border border-border/40 bg-muted/50 p-4">
+                    <code className="text-sm font-mono">
+                      npm install -g metron-osv-scanner
+                    </code>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border border-border/40 shadow-md">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-sm">
+                      2
+                    </div>
+                    <CardTitle className="text-xl font-semibold">
+                      Configure Slack Bot
+                    </CardTitle>
+                  </div>
+                  <CardDescription className="ml-11 text-sm">
+                    Create a{" "}
+                    <code className="rounded bg-muted px-2 py-1">
+                      .env.local
+                    </code>{" "}
+                    file in your project with Slack credentials
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="overflow-x-auto rounded-lg border border-border/40 bg-muted/50 p-4">
+                      <pre className="text-sm font-mono">
+                        {`SLACK_BOT_TOKEN="xoxb-your-slack-bot-token"
+SLACK_USER_ID="U01234567"
+PACKAGE_JSON_PATH="./package.json"`}
+                      </pre>
+                    </div>
+                    <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 dark:border-primary/20 dark:bg-primary/5">
+                      <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                        <strong>Note:</strong> Only these Slack variables are
+                        needed for CLI scanning. The other environment variables
+                        (NextAuth, MongoDB, GitHub) are only required if you're
+                        setting up the web dashboard.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border border-border/40 shadow-md">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-sm">
+                      3
+                    </div>
+                    <CardTitle className="text-xl font-semibold">
+                      Run Scanner
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="overflow-x-auto rounded-lg border border-border/40 bg-muted/50 p-4">
+                      <code className="text-sm font-mono">
+                        osv-slack-scanner scan
+                      </code>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      The scanner will automatically detect vulnerabilities and
+                      send Slack notifications
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Dashboard CTA */}
+        <section className="border-y bg-muted/50 py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mx-auto max-w-4xl text-center"
+            >
+              <Badge className="mb-4" variant="outline">
+                Web Dashboard
+              </Badge>
+              <h2 className="mb-6 text-4xl font-bold md:text-5xl">
+                Track Your Security Posture
+              </h2>
+              <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
+                Access our web dashboard to view vulnerability history, track
+                trends over time, and manage multiple projects from GitHub
+              </p>
+              <Link href="/login">
+                <Button size="lg" className="h-12 px-8 text-base">
+                  <Github className="mr-2 h-5 w-5" />
+                  Sign in with GitHub
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="border-t border-border/40 bg-muted/30 py-8 md:py-10">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20">
+                  <Shield className="h-4 w-4 text-primary-foreground" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold leading-none">
+                    OSV Slack Scanner
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Open Source Security
+                  </span>
                 </div>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
+              <div className="flex flex-col items-center gap-2 md:items-end">
+                <p className="text-sm text-muted-foreground">
+                  © 2026 OSV Slack Scanner. Powered by Google OSV Database.
+                </p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <a
+                    href="https://github.com"
+                    className="transition-colors hover:text-primary"
+                  >
+                    GitHub
+                  </a>
+                  <span>•</span>
+                  <a href="#" className="transition-colors hover:text-primary">
+                    Documentation
+                  </a>
+                  <span>•</span>
+                  <a href="#" className="transition-colors hover:text-primary">
+                    Support
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Latest Issues */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Latest Issues
-                </p>
-                <p className="text-3xl font-bold text-gray-900">
-                  {latestScan ? latestScan.totalVulnerabilities : 0}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-red-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Average Issues */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Average Issues
-                </p>
-                <p className="text-3xl font-bold text-gray-900">
-                  {averageVulnerabilities}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-yellow-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scan History */}
-        <div className="bg-white rounded-xl shadow-sm">
-          <div className="px-6 py-4 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Scan History
-            </h2>
-          </div>
-          <div className="p-6">
-            {history.length > 0 ? (
-              <div className="space-y-6">
-                {history
-                  .slice()
-                  .reverse()
-                  .map((scan: any, index: number) => (
-                    <div key={index} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold text-gray-800">
-                            Scan #{history.length - index}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {new Date(scan.timestamp).toLocaleString()}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-right font-bold text-lg">
-                            {scan.totalVulnerabilities}
-                          </p>
-                          <p className="text-sm text-gray-500">Issues</p>
-                        </div>
-                      </div>
-
-                      {/* Displays the list of packages */}
-                      {scan.packages && (
-                        <div className="mt-3 pt-3 border-t border-gray-200">
-                          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Packages Scanned
-                          </h4>
-                          <ul className="list-disc pl-5 mt-1 text-sm text-gray-700">
-                            {scan.packages.map((pkg: string, i: number) => (
-                              <li key={i}>{pkg}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No scan history found.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </main>
+        </footer>
+      </main>
+    </>
   );
 }

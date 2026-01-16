@@ -52,7 +52,39 @@ SLACK_USER_ID="U0..."
 
 # The path to the package.json file to monitor
 PACKAGE_JSON_PATH="./package.json"
+
+# Optional: Store scan history in MongoDB (Atlas free cluster works)
+# If MONGODB_URI is set, the dashboard and ingest API will use MongoDB.
+MONGODB_URI="mongodb+srv://<user>:<pass>@<cluster>/<db>?retryWrites=true&w=majority"
+MONGODB_DB="osv-dashboard"
+MONGODB_COLLECTION="scan_events"
+MONGODB_MAX_EVENTS="2000"
+
+# GitHub auth (required for dashboard access control)
+GITHUB_CLIENT_ID="..."
+GITHUB_CLIENT_SECRET="..."
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="..."
+
+# Hardening (recommended)
+# Disable custom project ids and require gh:owner/repo only.
+CUSTOM_PROJECTS_ENABLED=false
+
+# Require an API key for ingest (defaults to true in production).
+REQUIRE_INGEST_API_KEY=true
+DASHBOARD_API_KEY="..."
 ```
+
+## Project IDs
+
+- **GitHub repos:** use `gh:owner/repo` (example: `gh:octocat/Hello-World`).
+  - This same `projectId` works everywhere: in the dashboard URL and in the CLI scan/ingest.
+- **Custom/local projects:** you can use any string, but the first signed-in user to open it becomes the owner.
+
+## Importing from GitHub
+
+- Open `/` for the public landing page.
+- Sign in, then open `/import` to pick a repo and jump to its dashboard at `/dashboard?projectId=gh:owner/repo`.
 
 ### 4\. Run the Application
 

@@ -1,0 +1,336 @@
+[
+  {
+    "timestamp": "2026-01-10T07:11:09.241Z",
+    "projectId": "local-test",
+    "overallRisk": "high",
+    "totals": {
+      "vulnerabilities": 15,
+      "low": 14,
+      "avg": 1,
+      "high": 4,
+      "unknown": 0
+    },
+    "packages": [
+      {
+        "name": "@slack/web-api",
+        "version": "7.9.3",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@tailwindcss/postcss",
+        "version": "4.1.12",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@types/node",
+        "version": "20.19.11",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@types/react",
+        "version": "19.1.10",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@types/react-dom",
+        "version": "19.1.7",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "axios",
+        "version": "0.21.1",
+        "vulnerabilityCount": 4,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-4hjh-wcwx-xvwj",
+          "GHSA-cph5-m8f7-6c5x",
+          "GHSA-jr5f-v2jv-69x6",
+          "GHSA-wf5p-g6vw-rhxx"
+        ]
+      },
+      {
+        "name": "dotenv",
+        "version": "17.2.1",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "eslint",
+        "version": "9.39.2",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "eslint-config-next",
+        "version": "16.1.1",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "express",
+        "version": "4.17.2",
+        "vulnerabilityCount": 2,
+        "risk": "avg",
+        "vulnerabilityIds": [
+          "GHSA-qw6h-vgh9-j6wx",
+          "GHSA-rv95-896h-c2vc"
+        ]
+      },
+      {
+        "name": "jsonwebtoken",
+        "version": "8.5.1",
+        "vulnerabilityCount": 3,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-8cf7-32gw-wr33",
+          "GHSA-hjrf-2m68-5959",
+          "GHSA-qwph-4952-7xr6"
+        ]
+      },
+      {
+        "name": "moment",
+        "version": "2.29.1",
+        "vulnerabilityCount": 2,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-8hfj-j24r-96c4",
+          "GHSA-wc69-rhjr-hc9g"
+        ]
+      },
+      {
+        "name": "next",
+        "version": "15.4.6",
+        "vulnerabilityCount": 4,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-4342-x723-ch2f",
+          "GHSA-9qr9-h5gf-34mp",
+          "GHSA-mwv6-3258-q52c",
+          "GHSA-w37m-7fhw-fmv9"
+        ]
+      },
+      {
+        "name": "npm-run-all",
+        "version": "4.1.5",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "react",
+        "version": "19.1.0",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "react-dom",
+        "version": "19.1.0",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "tailwindcss",
+        "version": "4.1.12",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "tsx",
+        "version": "4.20.4",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "typescript",
+        "version": "5.9.2",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-01-10T07:39:15.954Z",
+    "projectId": "local-test",
+    "overallRisk": "high",
+    "totals": {
+      "vulnerabilities": 15,
+      "low": 14,
+      "avg": 1,
+      "high": 4,
+      "unknown": 0
+    },
+    "packages": [
+      {
+        "name": "@slack/web-api",
+        "version": "7.9.3",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@tailwindcss/postcss",
+        "version": "4.1.12",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@types/node",
+        "version": "20.19.11",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@types/react",
+        "version": "19.1.10",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "@types/react-dom",
+        "version": "19.1.7",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "axios",
+        "version": "0.21.1",
+        "vulnerabilityCount": 4,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-4hjh-wcwx-xvwj",
+          "GHSA-cph5-m8f7-6c5x",
+          "GHSA-jr5f-v2jv-69x6",
+          "GHSA-wf5p-g6vw-rhxx"
+        ]
+      },
+      {
+        "name": "dotenv",
+        "version": "17.2.1",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "eslint",
+        "version": "9.39.2",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "eslint-config-next",
+        "version": "16.1.1",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "express",
+        "version": "4.17.2",
+        "vulnerabilityCount": 2,
+        "risk": "avg",
+        "vulnerabilityIds": [
+          "GHSA-qw6h-vgh9-j6wx",
+          "GHSA-rv95-896h-c2vc"
+        ]
+      },
+      {
+        "name": "jsonwebtoken",
+        "version": "8.5.1",
+        "vulnerabilityCount": 3,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-8cf7-32gw-wr33",
+          "GHSA-hjrf-2m68-5959",
+          "GHSA-qwph-4952-7xr6"
+        ]
+      },
+      {
+        "name": "moment",
+        "version": "2.29.1",
+        "vulnerabilityCount": 2,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-8hfj-j24r-96c4",
+          "GHSA-wc69-rhjr-hc9g"
+        ]
+      },
+      {
+        "name": "next",
+        "version": "15.4.6",
+        "vulnerabilityCount": 4,
+        "risk": "high",
+        "vulnerabilityIds": [
+          "GHSA-4342-x723-ch2f",
+          "GHSA-9qr9-h5gf-34mp",
+          "GHSA-mwv6-3258-q52c",
+          "GHSA-w37m-7fhw-fmv9"
+        ]
+      },
+      {
+        "name": "npm-run-all",
+        "version": "4.1.5",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "react",
+        "version": "19.1.0",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "react-dom",
+        "version": "19.1.0",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "tailwindcss",
+        "version": "4.1.12",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "tsx",
+        "version": "4.20.4",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      },
+      {
+        "name": "typescript",
+        "version": "5.9.2",
+        "vulnerabilityCount": 0,
+        "risk": "low",
+        "vulnerabilityIds": []
+      }
+    ]
+  }
+]

@@ -2,30 +2,45 @@
   "name": "metron-osv-scanner",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "osv-slack-scanner": "cli.js"
+  },
   "scripts": {
     "dev": "npm-run-all --parallel next:dev scanner:dev",
     "next:dev": "next dev",
     "scanner:dev": "tsx watch scanner-runner.ts",
+    "scanner:cli": "node cli.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.11.1",
     "@slack/web-api": "^7.9.3",
     "axios": "^0.21.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^17.2.1",
     "express": "^4.17.2",
+    "framer-motion": "^12.25.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "lucide-react": "^0.562.0",
     "moment": "^2.29.1",
+    "mongodb": "^6.21.0",
     "next": "15.4.6",
+    "next-auth": "^4.24.13",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.1.1",
     "npm-run-all": "^4.1.5",
     "tailwindcss": "^4",
     "tsx": "^4.20.4",
