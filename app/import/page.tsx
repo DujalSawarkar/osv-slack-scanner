@@ -1,61 +1,32 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { listRepos } from "@/lib/github-api";
-import { getGitHubAccessTokenForUser } from "@/lib/github-token";
+"use client";
+
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 
-export default async function ImportPage() {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return (
-      <main className="min-h-screen bg-background">
-        <div className="container mx-auto max-w-2xl p-6">
-          <div className="mb-6 flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Import from GitHub
-            </h1>
-            <ThemeToggle />
-          </div>
-          <div className="rounded-lg border bg-card p-6">
-            <p className="text-sm text-muted-foreground">
-              Please sign in first.
-            </p>
-            <div className="mt-4">
-              <a href="/login">
-                <Button type="button">Go to login</Button>
-              </a>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
+export default function ImportPage() {
+  const [repos, setRepos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const userId = (session.user as any)?.id as string | undefined;
-  const token = userId ? await getGitHubAccessTokenForUser(userId) : null;
-  if (!token) {
-    return (
-      <main className="min-h-screen bg-background">
-        <div className="container mx-auto max-w-2xl p-6">
-          <div className="mb-6 flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Import from GitHub
-            </h1>
-            <ThemeToggle />
-          </div>
-          <div className="rounded-lg border bg-card p-6">
-            <p className="text-sm text-muted-foreground">
-              Missing GitHub access token. Try signing out and signing in again.
-            </p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  const repos = await listRepos(token);
+  useEffect(() => {
+    async function fetchRepos() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("/api/github/repos");
+        if (!res.ok) throw new Error("Failed to fetch repos");
+        const data = await res.json();
+        setRepos(data.repos || []);
+      } catch (e: any) {
+        setError(e.message || "Unknown error");
+      }
+      setLoading(false);
+    }
+    fetchRepos();
+  }, []);
 
   return (
     <main className="min-h-screen bg-background">
@@ -80,35 +51,47 @@ export default async function ImportPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4">
-          {repos.slice(0, 50).map((r) => (
-            <Card key={r.id}>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between gap-3">
-                  <span className="font-mono text-sm">{r.full_name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {r.private ? "private" : "public"}
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between gap-3">
-                <a
-                  className="text-sm text-muted-foreground hover:underline"
-                  href={r.html_url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on GitHub
-                </a>
-                <a
-                  href={`/dashboard?projectId=${encodeURIComponent(
-                    `gh:${r.full_name}`
-                  )}`}
-                >
-                  <Button type="button">Open Dashboard</Button>
-                </a>
-              </CardContent>
-            </Card>
-          ))}
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Spinner size={32} />
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-500 py-8">{error}</div>
+          ) : repos.length === 0 ? (
+            <div className="text-center text-muted-foreground py-8">
+              No repositories found.
+            </div>
+          ) : (
+            repos.slice(0, 50).map((r) => (
+              <Card key={r.id}>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between gap-3">
+                    <span className="font-mono text-sm">{r.full_name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {r.private ? "private" : "public"}
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex items-center justify-between gap-3">
+                  <a
+                    className="text-sm text-muted-foreground hover:underline"
+                    href={r.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View on GitHub
+                  </a>
+                  <a
+                    href={`/dashboard?projectId=${encodeURIComponent(
+                      `gh:${r.full_name}`
+                    )}`}
+                  >
+                    <Button type="button">Open Dashboard</Button>
+                  </a>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </div>
     </main>
